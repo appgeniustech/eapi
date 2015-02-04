@@ -42,37 +42,14 @@ module.exports = function() {
     // Bootstrap passport config
     require('./passport')(app);
 
-    //app.use(expressWinston.logger({
-    //    transports: [
-    //      new winston.transports.Console({
-    //          json: true,
-    //          colorize: true,
-    //          level: 'info',
-    //          meta: true,
-    //          expressFormat: false
-    //      })
-    //    ]
-    //}));
-
     // Globbing routing files
     config.getGlobbedFiles('./app/routes/**/*.js').forEach(function (routePath) {
         require(path.resolve(routePath))(app);
     });
 
-    //var elogger = expressWinston.errorLogger({
-    //    transports: [
-    //        new winston.transports.Console({
-    //            json: true,
-    //            colorize: true
-    //        })
-    //    ]
-    //});
-    //elogger.add(azureLogger, config.log.azure);
-    //app.use(elogger);
-
     // catch 404 and forward to error handler
     app.use(function (req, res, next) {
-        var err = new Error('Not Found - 404');
+        var err = new Error('Not Found - 404 : ' + req.method + ' - ' + req.url );
         err.status = 404;
         next(err);
     });

@@ -5,7 +5,6 @@
  */
 
 var app = require('../app');
-//var debug = require('debug')('EnchantApi:server');
 var http = require('http');
 var config = require('../config/config');
 var logger = require('../config/logger');
@@ -69,14 +68,14 @@ function onError(error) {
   switch (error.code) {
     case 'EACCES':
 		logger.log('crit', bind + ' requires elevated privileges', error);
-           // process.exit(1);
+        process.exit(1);
 
       break;
     case 'EADDRINUSE':
 		logger.log('crit', bind + ' is already in use', error);
 		break;
     default:
-		logger.log('crit', error);
+		logger.log('crit', 'default error in binwww', error);
       throw error;
   }
 }

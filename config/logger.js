@@ -33,11 +33,11 @@ var logger = new (winston.Logger)({
     },
     transports: [
     new (winston.transports.Console)({
-        level: 'crit',
+        level: 'info',
         colorize: false,
         timestamp: true,
         handleExceptions: true,
-        exitOnError: false
+        exitOnError: true
     })
     // new (winston.transports.File)({ filename: 'somefile.log' })
     ]
