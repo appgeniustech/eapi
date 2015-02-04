@@ -27,7 +27,7 @@ module.exports = function (app) {
                     return next(err);
                 }
                 if (!session) {
-                    return next('Unknown session : ' + sessionId);
+                    return next('Unknown session with id : ' + sessionId);
                 }
                 req.esession = session;
                 return next();
