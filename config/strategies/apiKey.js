@@ -76,7 +76,7 @@ Strategy.prototype.authenticate = function (req, options) {
 
 module.exports = function () {
 
-    passport.use(new Strategy({ apiKeyField: config.sessionToken.fieldName, passReqToCallback: config.sessionToken.passReqToCallback },
+    passport.use(new Strategy({ apiKeyHeader: config.sessionToken.apiKeyHeader, passReqToCallback: config.sessionToken.passReqToCallback },
       function (req, sessionId, done) {
               // set the user to `false` to
               // indicate failure and set a flash message.  Otherwise, return the

@@ -7,7 +7,6 @@
 var config = require('./config'),
 _ = require('lodash'),
 winston = require('winston'),
-expressWinston = require('express-winston'),
 azureLogger = require('winston-azuretable').AzureLogger;
 
 

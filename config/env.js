@@ -18,7 +18,7 @@ module.exports = {
             key: 'F+CoajLLR6QHpk1VIl/WozJywoPp3BUy2L49IiW35jln9Z2/ddkSacyuoNG36S+OmB3b72REPZ9nk8X9fepgEw==',
             tableName: 'enchantlog',
             partitionKey: require('os').hostname() + ':' + process.pid,
-            columns: true,
+            columns: false,
             level: 'trace'
         },
         console: {
@@ -47,7 +47,7 @@ module.exports = {
         profileFields: ['birthday', 'location', 'photos']
     },
     sessionToken: {
-        fieldName: 'x-session',
+        apiKeyHeader: 'x-session',
         passReqToCallback: true
     },
     twitter: {
