@@ -19,7 +19,8 @@ module.exports = function () {
     passport.use(new FacebookTokenStrategy(config.facebook,
   function (req, accessToken, refreshToken, profile, done) {
       logger.info('facebook login', { token: accessToken, profile: profile });      
-      //{ facebookId: profile.id },
+      //if facebook does not give us an email address
+      //profile._json.email = profile._json.email ? profile._json.email : profile.id + '@none.com';
       sessions.getByEmail(profile._json.email, function (session) {
           
           if (session) {

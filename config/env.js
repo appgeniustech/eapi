@@ -44,7 +44,7 @@ module.exports = {
         clientID: process.env.FACEBOOK_ID || '1577620145786241',
         clientSecret: process.env.FACEBOOK_SECRET || '1c7108d319a4270d49d6e82fbf3b27f9',
         passReqToCallback: true,
-        profileFields: ['birthday', 'location', 'photos']
+        profileFields: ['birthday', 'location', 'photos', 'email']
     },
     sessionToken: {
         apiKeyHeader: 'x-session',
