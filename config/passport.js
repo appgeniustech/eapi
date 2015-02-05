@@ -19,7 +19,7 @@ module.exports = function (app) {
     });
 
     app.use(function (req, res, next) {
-        if (req.url === '/logs' && req.method === 'POST')
+        if (req.url === '/logs' && (req.method === 'POST' || req.method === 'GET'))
             return next();
         if (req.url === '/info') return next();
 
