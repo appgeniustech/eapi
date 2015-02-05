@@ -8,16 +8,17 @@ var passport = require('passport'),
     config = require('../config'),
     flash = require('connect-flash'),
 	users = require('../../app/controllers/users.controller'),
+    logger = require('../logger'),
 	sessions = require('../../app/controllers/sessions.controller');
 
 module.exports = function () {
     //sending tokens requirements:
     //accessToken = accessToken || req.query.access_token || req.headers.access_token;
     //refreshToken = refreshToken || req.query.refresh_token || req.headers.refresh_token;
-
+    
     passport.use(new FacebookTokenStrategy(config.facebook,
   function (req, accessToken, refreshToken, profile, done) {
-
+      logger.info('facebook login', { token: accessToken, profile: profile });      
       //{ facebookId: profile.id },
       sessions.getByEmail(profile._json.email, function (session) {
           
