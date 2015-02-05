@@ -4,6 +4,7 @@
  * Module dependencies.
  */
 var path = require('path'),
+    mongoose = require('mongoose'),
 	config = require('./config'),
     passport = require('passport'),
 	    sessions = require('../app/controllers/sessions.controller');
@@ -20,15 +21,23 @@ module.exports = function (app) {
     app.use(function (req, res, next) {
         if (req.url === '/logs' && req.method === 'POST')
             return next();
+        if (req.url === '/info') return next();
+
         var sessionId = req.headers[config.sessionToken.apiKeyHeader];
         if (sessionId) {
+            if (!mongoose.Types.ObjectId.isValid(sessionId)) {
+
+                res.status(400);
+                return next(new Error('Invalid session id of ' + sessionId));
+            }
             sessions.getById(sessionId, function(err, session) {
                 if (err) {
                     return next(err);
                 }
                 if (!session) {
-                    return next('Unknown session with id : ' + sessionId);
+                    return next(new Error('Unknown session with id : ' + sessionId));
                 }
+                res.setHeader("x-session", session.id);
                 req.esession = session;
                 return next();
             });

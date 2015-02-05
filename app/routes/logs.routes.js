@@ -3,6 +3,6 @@
 module.exports = function (app) {
     // Profile Routes
     app.route('/logs')
-		.post(logs.log);
+        .post(logs.log);
 
 };

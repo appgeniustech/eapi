@@ -49,20 +49,34 @@ module.exports = function() {
 
     // catch 404 and forward to error handler
     app.use(function (req, res, next) {
-        var err = new Error('Not Found - 404 : ' + req.method + ' - ' + req.url );
+        var err = new Error('Not Found - 404');
         err.status = 404;
         next(err);
     });
 
     // error handlers
 
+    function getErrorMeta(err, req) {
+        var meta = {
+            headers: req.headers,
+            body: req.body,
+            url: req.originalUrl,
+            params: req.params,
+            query: req.query,
+            method: req.method,
+            stack: err ? err.stack : ''
+        };
+
+        return meta;
+    }
+
     // development error handler
     // will print stacktrace
     if (app.get('env') === 'development') {
         app.use(function (err, req, res, next) {
-            logger.warn('Exressjs error: ' + err.message, err);
+            logger.warn('Express error: ' + err.message, getErrorMeta(err, req));
             res.status(err.status || 500);
-            res.send(err.message + ' : ' + err.stack);
+            res.send('Could not process your request. Please try again.');
         });
     }
 
