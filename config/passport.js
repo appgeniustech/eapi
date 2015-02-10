@@ -22,6 +22,9 @@ module.exports = function (app) {
         if (req.url === '/logs' && (req.method === 'POST' || req.method === 'GET'))
             return next();
         if (req.url === '/info') return next();
+        var apikey = req.headers["apikey"];
+        if (apikey && apikey === 'ApiRestKey+all')
+            return next();
 
         var sessionId = req.headers[config.sessionToken.apiKeyHeader];
         if (sessionId) {

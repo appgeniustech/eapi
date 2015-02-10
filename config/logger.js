@@ -33,7 +33,7 @@ var logger = new (winston.Logger)({
     transports: [
     new (winston.transports.Console)({
         level: 'info',
-        colorize: false,
+        colorize: true,
         timestamp: true,
         handleExceptions: true,
         exitOnError: true
@@ -42,7 +42,7 @@ var logger = new (winston.Logger)({
     ]
 });
 
-logger.add(azureLogger, config.log.azure);
+//logger.add(azureLogger, config.log.azure);
 
 winston.addColors(customColors);
 

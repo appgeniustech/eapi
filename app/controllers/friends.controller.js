@@ -7,7 +7,9 @@ var mongoose = require('mongoose'),
 	errorHandler = require('./errors.controller'),
 	User = mongoose.model('User'),
 	Profile = mongoose.model('Profile'),
-	_ = require('lodash');
+	_ = require('lodash'),
+    config = require('../../config/config'),
+    httpreq = require('httpreq');
 
 exports.newFriend = function (req, res) {
 	var user = new User();
@@ -50,15 +52,36 @@ exports.delete = function(req, res) {
     		message: 'Can no delete your self'
     	});
 
-    friend.remove(function (err) {
-    	if (err) {
-    		return res.status(400).send({
-    			message: errorHandler.getErrorMessage(err)
-    		});
-    	} else {
-	        res.json({});
-	    }
-    });
+    if (friend.pictures && friend.pictures.length > 0) {
+        httpreq.delete(config.agStorage.url + friend.id + '/multi', {
+            json: friend.pictures
+        }, function(err) {
+            if (err)
+                return res.status(400).send({
+                    message: errorHandler.getErrorMessage(err)
+                });
+            friend.remove(function(err) {
+                if (err) {
+                    return res.status(400).send({
+                        message: errorHandler.getErrorMessage(err)
+                    });
+                } else {
+                    res.json({});
+                }
+            });
+        });
+
+    } else {
+        friend.remove(function (err) {
+            if (err) {
+                return res.status(400).send({
+                    message: errorHandler.getErrorMessage(err)
+                });
+            } else {
+                res.json({});
+            }
+        });
+    }
 };
 
 exports.update = function (req, res) {
@@ -73,8 +96,8 @@ exports.update = function (req, res) {
     friend.name = req.body.name;
     friend.age = req.body.age;
     friend.location = req.body.location;
+    friend.gender = req.body.gender;
     friend.email = req.body.email;
-    friend.picture = req.body.picture;
     friend.status = 'registered';
     friend.profile[0].description = req.body.profile[0].description;
     friend.profile[0].likes = req.body.profile[0].likes;
@@ -100,7 +123,7 @@ exports.update = function (req, res) {
  * List of Friends
  */
 exports.list = function (req, res) {
-    User.find({ 'status': 'registered' }).populate({ path: 'profile.createdBy' }).sort('-created').exec(function (err, friends) {
+    User.find({ 'status': 'registered' }).populate({ path: 'profile.createdBy' }).sort('-created').lean().exec(function (err, friends) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)

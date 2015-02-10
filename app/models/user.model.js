@@ -88,6 +88,8 @@ var UserSchema = new Schema({
 
     picture: String,
 
+    pictures: [String],
+
     profile: [Profile.schema],
    
     auth: {

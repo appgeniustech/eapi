@@ -70,15 +70,23 @@ exports.update = function(req, res) {
                 message: errorHandler.getErrorMessage(err)
             });
         } else {
+            var b = req.body;
+            var u = session.user;
             //current user loaded, now update
-            var user = _.extend(session.user, req.body);
-            user.save(function(err) {
+            u.name = b.name;
+            u.email = b.email;
+            u.age = b.age;
+            u.gender = b.gender;
+            u.location = b.location;
+            u.description = b.description;
+
+            u.save(function (err) {
                 if (err) {
                     return res.status(400).send({
                         message: errorHandler.getErrorMessage(err)
                     });
                 } else {
-                    res.json(user);
+                    res.json(u);
                 }
             });
         }
