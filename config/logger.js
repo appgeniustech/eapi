@@ -7,7 +7,9 @@
 var config = require('./config'),
 _ = require('lodash'),
 winston = require('winston'),
-azureLogger = require('winston-azuretable').AzureLogger;
+azureLogger = require('winston-azuretable').AzureLogger,
+Bottleneck = require("bottleneck");;
+
 
 
 // Set up logger
@@ -42,12 +44,14 @@ var logger = new (winston.Logger)({
     ]
 });
 
-//logger.add(azureLogger, config.log.azure);
+if(process.env.NODE_ENV !== 'development')
+    logger.add(azureLogger, config.log.azure);
 
 winston.addColors(customColors);
 
 // Extend logger object to properly log 'Error' types
 var origLog = logger.log;
+var limiter = new Bottleneck(1, config.log.limit);
 
 logger.log = function (level, msg) {
     if (msg instanceof Error) {
@@ -55,7 +59,10 @@ logger.log = function (level, msg) {
         args[1] = msg.stack;
         origLog.apply(logger, args);
     } else {
-        origLog.apply(logger, arguments);
+            limiter.submit(
+                function(o, l, a, callback) { o.apply(l, a);
+                    callback();
+                }, origLog, logger, arguments, null);
     }
 };
 /* LOGGER EXAMPLES

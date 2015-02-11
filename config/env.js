@@ -11,6 +11,7 @@ module.exports = {
     log: {
         // Can specify one of 'combined', 'common', 'dev', 'short', 'tiny'
         format: 'dev',
+        limit: process.env.LOG_LIMIT || 800,
         // Stream defaults to process.stdout
         // Uncomment to enable logging to a log on the file system
         azure: {
@@ -41,7 +42,7 @@ module.exports = {
         title: 'Enchant Rest API'
     },
     agStorage: {
-        url: 'agstorage.azurewebsites.net/images/'
+        url: process.env.AG_STORAGE_URL || 'http://localhost:58061/images/'
     },
 
     facebook: {

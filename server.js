@@ -87,11 +87,10 @@ function onListening() {
     var bind = typeof addr === 'string'
       ? 'pipe ' + addr
       : 'port ' + addr.port;
-    console.log('started app');
     // Logging initialization
     logger.log('info', config.app.title + ' application started');
+    logger.log('info', 'AgStorage URL: ' + config.agStorage.url);
     logger.log('info', 'Environment: ' + process.env.NODE_ENV);
     logger.log('info', 'Listening on: ' + bind);
-    logger.log('info', config.app.title + ' application started');
     logger.log('info', 'Database: ' + config.db.uri);
 }
