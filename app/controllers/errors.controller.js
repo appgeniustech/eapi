@@ -1,4 +1,5 @@
 ﻿'use strict';
+var logger = require('../../config/logger');
 
 /**
  * Get unique error field name
@@ -30,13 +31,13 @@ exports.getErrorMessage = function(err) {
 				message = getUniqueErrorMessage(err);
 				break;
 			default:
-				message = 'Something went wrong';
+				message = 'Could not process last request. Please try again.';
 		}
 	} else {
 		for (var errName in err.errors) {
 			if (err.errors[errName].message) message = err.errors[errName].message;
 		}
 	}
-
+    logger.crit('Error from controller. Code: ' + err.code, err);
 	return message;
 };
